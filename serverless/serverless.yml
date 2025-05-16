@@ -1,0 +1,81 @@
+
+service: student-management-system
+
+frameworkVersion: '^4.0.0'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  environment:
+    DB_HOST: database-1.cp6ai4kmm7tf.us-east-1.rds.amazonaws.com
+    DB_NAME: manageStudents
+    DB_USER: postgres
+    DB_PASSWORD: 
+    DB_PORT: 5432
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+          Resource: 
+            - "arn:aws:ssm:${aws:region}:${aws:accountId}:parameter/student-app/*"
+        - Effect: Allow
+          Action:
+            - rds-db:connect
+          Resource:
+            - "arn:aws:rds:${aws:region}:${aws:accountId}:db:database-1"
+
+functions:
+  getStudents:
+    handler: lambda_functions/students/get_students.lambda_handler
+    events:
+      - http:
+          path: /students
+          method: get
+          cors: true
+  createStudent:
+    handler: lambda_functions/students/create_student.lambda_handler
+    events:
+      - http:
+          path: /students
+          method: post
+          cors: true
+  updateStudent:
+    handler: lambda_functions/students/update_student.lambda_handler
+    events:
+      - http:
+          path: /students/{id}
+          method: put
+          cors: true
+  deleteStudent:
+    handler: lambda_functions/students/delete_student.lambda_handler
+    events:
+      - http:
+          path: /students/{id}
+          method: delete
+          cors: true
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!.venv/**'
+    - '!.env'
+    - '!.git/**'
+    - 'lambda_functions/**'
+    - 'db_connection.py'
+
+plugins:
+  - serverless-offline
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true  # Sử dụng Docker để đóng gói package tương thích Amazon Linux 2
+    slim: true          # Loại bỏ file không cần thiết
+    strip: true         # Loại bỏ ký hiệu debug từ binary
+    noDeploy: []        # Bao gồm tất cả package trong requirements.txt
+    useStaticCache: true
+    useDownloadCache: true
+    cacheLocation: './.requirements-cache'

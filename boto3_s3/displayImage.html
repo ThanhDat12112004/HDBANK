@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Image from URL</title>
+    <style>
+        .container {
+            margin: 20px;
+            text-align: center;
+        }
+        #urlInput {
+            width: 300px;
+            padding: 5px;
+        }
+        #imageDisplay {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="urlInput" placeholder="Enter image URL here">
+        <button onclick="displayImage()">OK</button>
+        <div>
+            <img id="imageDisplay" src="" alt="Image will appear here" style="display: none;">
+        </div>
+    </div>
+
+    <script>
+        function displayImage() {
+            const url = document.getElementById('urlInput').value;
+            const img = document.getElementById('imageDisplay');
+            if (url) {
+                img.src = url;
+                img.style.display = 'block';
+            } else {
+                alert('Please enter an image URL');
+            }
+        }
+    </script>
+</body>
+</html>
