@@ -1,3 +1,9 @@
 {
-	"greeting": "Hello from Lingo.dev"
+	"greeting": "Hello from Lingo.dev",
+	"hello" :"Hello world",
+	"welcome": "Welcome to our application",
+	"farewell": "Goodbye, see you soon",
+	"error": "An error occurred, please try again",
+	"loading": "Loading, please wait...",
+	"success": "Operation completed successfully"
 }
