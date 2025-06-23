@@ -1,0 +1,26 @@
+service: managestudent-api
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  stage: dev
+  environment:
+    DATABASE_URL: ${env:POSTGRES_URI} # Lấy từ biến môi trường
+
+functions:
+  app:
+    handler: main.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+plugins:
+  - serverless-python-requirements
+  - serverless-dotenv-plugin
+
+custom:
+  pythonRequirements:
+    dockerizePip: non-linux
