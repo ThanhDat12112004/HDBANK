@@ -1,0 +1,60 @@
+service: student-management-api
+
+frameworkVersion: '^4.0.0'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  environment:
+    DB_HOST: students.c2dqw60uusp5.us-east-1.rds.amazonaws.com
+    DB_PORT: 5432
+    DB_NAME: students
+    DB_USER: postgres
+    DB_PASSWORD: DuongThanhDat
+
+functions:
+  get_students:
+    handler: src/handlers/student_handler.get_students
+    events:
+      - http:
+          path: /students
+          method: get
+  
+  get_student:
+    handler: src/handlers/student_handler.get_student
+    events:
+      - http:
+          path: /students/{id}
+          method: get
+  
+  create_student:
+    handler: src/handlers/student_handler.create_student
+    events:
+      - http:
+          path: /students
+          method: post
+  
+  update_student:
+    handler: src/handlers/student_handler.update_student
+    events:
+      - http:
+          path: /students/{id}
+          method: put
+  
+  delete_student:
+    handler: src/handlers/student_handler.delete_student
+    events:
+      - http:
+          path: /students/{id}
+          method: delete
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    layer:
+      name: python-deps
+      description: Python dependencies for student management API
