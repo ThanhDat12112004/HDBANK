@@ -12,6 +12,30 @@
       "environment": {
         "STAGE": "dev"
       },
+      "iamRoleStatements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "ses:SendEmail",
+            "ses:SendTemplatedEmail",
+            "ses:SendRawEmail",
+            "ses:GetSendQuota",
+            "ses:GetSendStatistics",
+            "ses:ListVerifiedEmailAddresses",
+            "ses:ListTemplates"
+          ],
+          "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "*"
+        }
+      ],
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
@@ -116,6 +140,30 @@
               "LogGroupName": "/aws/lambda/serverless-crud-python-demo-dev-deleteItem"
             }
           },
+          "SendEmailLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/serverless-crud-python-demo-dev-sendEmail"
+            }
+          },
+          "SendTemplateEmailLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/serverless-crud-python-demo-dev-sendTemplateEmail"
+            }
+          },
+          "GetSendQuotaLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/serverless-crud-python-demo-dev-getSendQuota"
+            }
+          },
+          "GetSendStatisticsLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/serverless-crud-python-demo-dev-getSendStatistics"
+            }
+          },
           "IamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -173,6 +221,12 @@
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/serverless-crud-python-demo-dev*:*:*"
                           }
                         ]
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][0]"
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][1]"
                       }
                     ]
                   }
@@ -201,7 +255,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.create",
               "Runtime": "python3.9",
@@ -231,7 +285,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.get",
               "Runtime": "python3.9",
@@ -261,7 +315,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.list_items",
               "Runtime": "python3.9",
@@ -291,7 +345,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.update",
               "Runtime": "python3.9",
@@ -321,7 +375,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.delete",
               "Runtime": "python3.9",
@@ -344,54 +398,214 @@
               "DeleteItemLogGroup"
             ]
           },
-          "CreateItemLambdaVersionL6HZwv7N3cIpLoCbxPwyzZz5VgisSL7JL0BolABI": {
+          "SendEmailLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
+              },
+              "Handler": "src/handlers/email.send_email",
+              "Runtime": "python3.9",
+              "FunctionName": "serverless-crud-python-demo-dev-sendEmail",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "SendEmailLogGroup"
+            ]
+          },
+          "SendTemplateEmailLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
+              },
+              "Handler": "src/handlers/email.send_template_email",
+              "Runtime": "python3.9",
+              "FunctionName": "serverless-crud-python-demo-dev-sendTemplateEmail",
+              "MemorySize": 1024,
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "SendTemplateEmailLogGroup"
+            ]
+          },
+          "GetSendQuotaLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
+              },
+              "Handler": "src/handlers/email.get_send_quota",
+              "Runtime": "python3.9",
+              "FunctionName": "serverless-crud-python-demo-dev-getSendQuota",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetSendQuotaLogGroup"
+            ]
+          },
+          "GetSendStatisticsLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z/serverless-crud-python-demo.zip"
+              },
+              "Handler": "src/handlers/email.get_send_statistics",
+              "Runtime": "python3.9",
+              "FunctionName": "serverless-crud-python-demo-dev-getSendStatistics",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "STAGE": "dev"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "GetSendStatisticsLogGroup"
+            ]
+          },
+          "CreateItemLambdaVersionLmzJvQTAemrpgcOizfzg2jzPU9b1e90BztkMt5LjTdA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
             }
           },
-          "GetItemLambdaVersion4v0wmq1mEfiD63AyvCwBZmZFIBo943CsDRjmSKw0U": {
+          "GetItemLambdaVersion4LD4MxG41KlyHWh6wnkkhM311sO8jr1yezlnHFssk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
             }
           },
-          "ListItemsLambdaVersionok4AjEyjNAeIJJgEwun6g8MPfLMdn0zmyRzhuxaPyM": {
+          "ListItemsLambdaVersion8wBu84yTRiSAjir4fMXaYs2vw9GsloFGvJywWkKqs": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ListItemsLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
             }
           },
-          "UpdateItemLambdaVersionlKhidanJrw6uf7PeFs6m6IDX78odXDIwbMCYDI4Q4": {
+          "UpdateItemLambdaVersion6CE3QY9YUsvaCveSDEdHOnaBD6aFJqC7P1DEgUG9A": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
             }
           },
-          "DeleteItemLambdaVersionV7GxK0JElQDMGhfKVbQp025nr1aK9HjEeds9SNM": {
+          "DeleteItemLambdaVersiondxKAjQoAypmLvgqfm21kwJtLTrmVM9HOfOJHR3Zkxk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
+            }
+          },
+          "SendEmailLambdaVersion6xtUgL8h3cqpAldI6iaIyU98AJzamOKT0zZx02jTu8": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SendEmailLambdaFunction"
+              },
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
+            }
+          },
+          "SendTemplateEmailLambdaVersionnFJHemqueGi9Mz4jtSYfnnjhizTM73wTJpNA7YeIHcA": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "SendTemplateEmailLambdaFunction"
+              },
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
+            }
+          },
+          "GetSendQuotaLambdaVersionukQUcu7zq7stohNxcWxd9PswPpyTwGcFailoH5vE": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetSendQuotaLambdaFunction"
+              },
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
+            }
+          },
+          "GetSendStatisticsLambdaVersionbtB8OkwLTTE9c48HlPkeu6KEsHCK1MUTYxUmjYRiE9o": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetSendStatisticsLambdaFunction"
+              },
+              "CodeSha256": "UXPOGfnt9982N6pCK5+ZkVC19S1D966jU7Do1wopjAE="
             }
           },
           "ApiGatewayRestApi": {
@@ -428,6 +642,69 @@
                 "Ref": "ApiGatewayResourceItems"
               },
               "PathPart": "{id}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceEmail": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "email",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceEmailSend": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceEmail"
+              },
+              "PathPart": "send",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceEmailSendDashtemplate": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceEmail"
+              },
+              "PathPart": "send-template",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceEmailQuota": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceEmail"
+              },
+              "PathPart": "quota",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceEmailStatistics": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceEmail"
+              },
+              "PathPart": "statistics",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -517,6 +794,186 @@
               },
               "ResourceId": {
                 "Ref": "ApiGatewayResourceItemsIdVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodEmailSendOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailSend"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodEmailSendDashtemplateOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailSendDashtemplate"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodEmailQuotaOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailQuota"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodEmailStatisticsOptions": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "AuthorizationType": "NONE",
+              "HttpMethod": "OPTIONS",
+              "MethodResponses": [
+                {
+                  "StatusCode": "200",
+                  "ResponseParameters": {
+                    "method.response.header.Access-Control-Allow-Origin": true,
+                    "method.response.header.Access-Control-Allow-Headers": true,
+                    "method.response.header.Access-Control-Allow-Methods": true
+                  },
+                  "ResponseModels": {}
+                }
+              ],
+              "RequestParameters": {},
+              "Integration": {
+                "Type": "MOCK",
+                "RequestTemplates": {
+                  "application/json": "{statusCode:200}"
+                },
+                "ContentHandling": "CONVERT_TO_TEXT",
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": "'*'",
+                      "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                      "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+                    },
+                    "ResponseTemplates": {
+                      "application/json": ""
+                    }
+                  }
+                ]
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailStatistics"
               },
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
@@ -753,7 +1210,191 @@
               "DeleteItemLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1750653098870": {
+          "ApiGatewayMethodEmailSendPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailSend"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": true,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "SendEmailLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "SendEmailLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodEmailSendDashtemplatePost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailSendDashtemplate"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": true,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "SendTemplateEmailLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "SendTemplateEmailLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodEmailQuotaGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailQuota"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": true,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetSendQuotaLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetSendQuotaLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayMethodEmailStatisticsGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceEmailStatistics"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": true,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetSendStatisticsLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            },
+            "DependsOn": [
+              "GetSendStatisticsLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayDeployment1750672443479": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -764,11 +1405,19 @@
             "DependsOn": [
               "ApiGatewayMethodItemsOptions",
               "ApiGatewayMethodItemsIdVarOptions",
+              "ApiGatewayMethodEmailSendOptions",
+              "ApiGatewayMethodEmailSendDashtemplateOptions",
+              "ApiGatewayMethodEmailQuotaOptions",
+              "ApiGatewayMethodEmailStatisticsOptions",
               "ApiGatewayMethodItemsPost",
               "ApiGatewayMethodItemsIdVarGet",
               "ApiGatewayMethodItemsGet",
               "ApiGatewayMethodItemsIdVarPut",
-              "ApiGatewayMethodItemsIdVarDelete"
+              "ApiGatewayMethodItemsIdVarDelete",
+              "ApiGatewayMethodEmailSendPost",
+              "ApiGatewayMethodEmailSendDashtemplatePost",
+              "ApiGatewayMethodEmailQuotaGet",
+              "ApiGatewayMethodEmailStatisticsGet"
             ]
           },
           "CreateItemLambdaPermissionApiGateway": {
@@ -955,6 +1604,160 @@
                 ]
               }
             }
+          },
+          "SendEmailLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "SendEmailLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "SendTemplateEmailLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "SendTemplateEmailLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetSendQuotaLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetSendQuotaLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetSendStatisticsLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetSendStatisticsLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "EmailConfigurationSet": {
+            "Type": "AWS::SES::ConfigurationSet",
+            "Properties": {
+              "Name": "serverless-crud-python-demo-dev-config-set"
+            }
           }
         },
         "Outputs": {
@@ -969,7 +1772,7 @@
           "CreateItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateItemLambdaVersionL6HZwv7N3cIpLoCbxPwyzZz5VgisSL7JL0BolABI"
+              "Ref": "CreateItemLambdaVersionLmzJvQTAemrpgcOizfzg2jzPU9b1e90BztkMt5LjTdA"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-CreateItemLambdaFunctionQualifiedArn"
@@ -978,7 +1781,7 @@
           "GetItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetItemLambdaVersion4v0wmq1mEfiD63AyvCwBZmZFIBo943CsDRjmSKw0U"
+              "Ref": "GetItemLambdaVersion4LD4MxG41KlyHWh6wnkkhM311sO8jr1yezlnHFssk"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-GetItemLambdaFunctionQualifiedArn"
@@ -987,7 +1790,7 @@
           "ListItemsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ListItemsLambdaVersionok4AjEyjNAeIJJgEwun6g8MPfLMdn0zmyRzhuxaPyM"
+              "Ref": "ListItemsLambdaVersion8wBu84yTRiSAjir4fMXaYs2vw9GsloFGvJywWkKqs"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-ListItemsLambdaFunctionQualifiedArn"
@@ -996,7 +1799,7 @@
           "UpdateItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateItemLambdaVersionlKhidanJrw6uf7PeFs6m6IDX78odXDIwbMCYDI4Q4"
+              "Ref": "UpdateItemLambdaVersion6CE3QY9YUsvaCveSDEdHOnaBD6aFJqC7P1DEgUG9A"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-UpdateItemLambdaFunctionQualifiedArn"
@@ -1005,10 +1808,46 @@
           "DeleteItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteItemLambdaVersionV7GxK0JElQDMGhfKVbQp025nr1aK9HjEeds9SNM"
+              "Ref": "DeleteItemLambdaVersiondxKAjQoAypmLvgqfm21kwJtLTrmVM9HOfOJHR3Zkxk"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-DeleteItemLambdaFunctionQualifiedArn"
+            }
+          },
+          "SendEmailLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SendEmailLambdaVersion6xtUgL8h3cqpAldI6iaIyU98AJzamOKT0zZx02jTu8"
+            },
+            "Export": {
+              "Name": "sls-serverless-crud-python-demo-dev-SendEmailLambdaFunctionQualifiedArn"
+            }
+          },
+          "SendTemplateEmailLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "SendTemplateEmailLambdaVersionnFJHemqueGi9Mz4jtSYfnnjhizTM73wTJpNA7YeIHcA"
+            },
+            "Export": {
+              "Name": "sls-serverless-crud-python-demo-dev-SendTemplateEmailLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetSendQuotaLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetSendQuotaLambdaVersionukQUcu7zq7stohNxcWxd9PswPpyTwGcFailoH5vE"
+            },
+            "Export": {
+              "Name": "sls-serverless-crud-python-demo-dev-GetSendQuotaLambdaFunctionQualifiedArn"
+            }
+          },
+          "GetSendStatisticsLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetSendStatisticsLambdaVersionbtB8OkwLTTE9c48HlPkeu6KEsHCK1MUTYxUmjYRiE9o"
+            },
+            "Export": {
+              "Name": "sls-serverless-crud-python-demo-dev-GetSendStatisticsLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -1174,7 +2013,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "CreateItemLambdaVersionL6HZwv7N3cIpLoCbxPwyzZz5VgisSL7JL0BolABI"
+        "versionLogicalId": "CreateItemLambdaVersionLmzJvQTAemrpgcOizfzg2jzPU9b1e90BztkMt5LjTdA"
       },
       "getItem": {
         "handler": "src/handlers/items.get",
@@ -1211,7 +2050,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "GetItemLambdaVersion4v0wmq1mEfiD63AyvCwBZmZFIBo943CsDRjmSKw0U"
+        "versionLogicalId": "GetItemLambdaVersion4LD4MxG41KlyHWh6wnkkhM311sO8jr1yezlnHFssk"
       },
       "listItems": {
         "handler": "src/handlers/items.list_items",
@@ -1248,7 +2087,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "ListItemsLambdaVersionok4AjEyjNAeIJJgEwun6g8MPfLMdn0zmyRzhuxaPyM"
+        "versionLogicalId": "ListItemsLambdaVersion8wBu84yTRiSAjir4fMXaYs2vw9GsloFGvJywWkKqs"
       },
       "updateItem": {
         "handler": "src/handlers/items.update",
@@ -1285,7 +2124,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "UpdateItemLambdaVersionlKhidanJrw6uf7PeFs6m6IDX78odXDIwbMCYDI4Q4"
+        "versionLogicalId": "UpdateItemLambdaVersion6CE3QY9YUsvaCveSDEdHOnaBD6aFJqC7P1DEgUG9A"
       },
       "deleteItem": {
         "handler": "src/handlers/items.delete",
@@ -1322,8 +2161,167 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "DeleteItemLambdaVersionV7GxK0JElQDMGhfKVbQp025nr1aK9HjEeds9SNM"
+        "versionLogicalId": "DeleteItemLambdaVersiondxKAjQoAypmLvgqfm21kwJtLTrmVM9HOfOJHR3Zkxk"
+      },
+      "sendEmail": {
+        "handler": "src/handlers/email.send_email",
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "email/send",
+              "method": "post",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "private": true,
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "serverless-crud-python-demo-dev-sendEmail",
+        "package": {},
+        "memory": 1024,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "SendEmailLambdaVersion6xtUgL8h3cqpAldI6iaIyU98AJzamOKT0zZx02jTu8"
+      },
+      "sendTemplateEmail": {
+        "handler": "src/handlers/email.send_template_email",
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "email/send-template",
+              "method": "post",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "POST"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "private": true,
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "serverless-crud-python-demo-dev-sendTemplateEmail",
+        "package": {},
+        "memory": 1024,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "SendTemplateEmailLambdaVersionnFJHemqueGi9Mz4jtSYfnnjhizTM73wTJpNA7YeIHcA"
+      },
+      "getSendQuota": {
+        "handler": "src/handlers/email.get_send_quota",
+        "events": [
+          {
+            "http": {
+              "path": "email/quota",
+              "method": "get",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "GET"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "private": true,
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "serverless-crud-python-demo-dev-getSendQuota",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "GetSendQuotaLambdaVersionukQUcu7zq7stohNxcWxd9PswPpyTwGcFailoH5vE"
+      },
+      "getSendStatistics": {
+        "handler": "src/handlers/email.get_send_statistics",
+        "events": [
+          {
+            "http": {
+              "path": "email/statistics",
+              "method": "get",
+              "cors": {
+                "origin": "*",
+                "methods": [
+                  "OPTIONS",
+                  "GET"
+                ],
+                "headers": [
+                  "Content-Type",
+                  "X-Amz-Date",
+                  "Authorization",
+                  "X-Api-Key",
+                  "X-Amz-Security-Token",
+                  "X-Amz-User-Agent",
+                  "X-Amzn-Trace-Id"
+                ],
+                "allowCredentials": false
+              },
+              "private": true,
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "serverless-crud-python-demo-dev-getSendStatistics",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "python3.9",
+        "vpc": {},
+        "versionLogicalId": "GetSendStatisticsLambdaVersionbtB8OkwLTTE9c48HlPkeu6KEsHCK1MUTYxUmjYRiE9o"
       }
+    },
+    "resources": {
+      "Resources": {
+        "EmailConfigurationSet": {
+          "Type": "AWS::SES::ConfigurationSet",
+          "Properties": {
+            "Name": "serverless-crud-python-demo-dev-config-set"
+          }
+        }
+      },
+      "Outputs": {}
     },
     "configValidationMode": "warn",
     "serviceFilename": "serverless.yml",
@@ -1341,6 +2339,9 @@
       },
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
       }
     },
     "layers": {},
@@ -1348,7 +2349,7 @@
     "artifact": "/Users/Shared/HDBank/20th06/.serverless/serverless-crud-python-demo.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z",
+    "artifactDirectoryName": "serverless/serverless-crud-python-demo/dev/1750672456353-2025-06-23T09:54:16.353Z",
     "artifact": "serverless-crud-python-demo.zip"
   }
 }

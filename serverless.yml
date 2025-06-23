@@ -9,12 +9,32 @@ provider:
   region: us-east-1
   environment:
     STAGE: ${self:provider.stage}
+  iamRoleStatements:
+    # Quyền cho SES
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+        - ses:SendTemplatedEmail
+        - ses:SendRawEmail
+        - ses:GetSendQuota
+        - ses:GetSendStatistics
+        - ses:ListVerifiedEmailAddresses
+        - ses:ListTemplates
+      Resource: "*"
+    # Quyền cho CloudWatch Logs
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: "*"
 
 plugins:
   - serverless-python-requirements
   - serverless-offline
 
 functions:
+  # CRUD Functions
   createItem:
     handler: src/handlers/items.create
     events:
@@ -22,7 +42,6 @@ functions:
           path: /items
           method: post
           cors: true
-          private: true
 
   getItem:
     handler: src/handlers/items.get
@@ -31,7 +50,6 @@ functions:
           path: /items/{id}
           method: get
           cors: true
-          private: true
 
   listItems:
     handler: src/handlers/items.list_items
@@ -40,7 +58,6 @@ functions:
           path: /items
           method: get
           cors: true
-          private: true
 
   updateItem:
     handler: src/handlers/items.update
@@ -49,7 +66,6 @@ functions:
           path: /items/{id}
           method: put
           cors: true
-          private: true
 
   deleteItem:
     handler: src/handlers/items.delete
@@ -58,7 +74,41 @@ functions:
           path: /items/{id}
           method: delete
           cors: true
-          private: true
+
+  # Email Functions
+  sendEmail:
+    handler: src/handlers/email.send_email
+    timeout: 30
+    events:
+      - http:
+          path: /email/send
+          method: post
+          cors: true
+
+  sendTemplateEmail:
+    handler: src/handlers/email.send_template_email
+    timeout: 30
+    events:
+      - http:
+          path: /email/send-template
+          method: post
+          cors: true
+
+  getSendQuota:
+    handler: src/handlers/email.get_send_quota
+    events:
+      - http:
+          path: /email/quota
+          method: get
+          cors: true
+
+  getSendStatistics:
+    handler: src/handlers/email.get_send_statistics
+    events:
+      - http:
+          path: /email/statistics
+          method: get
+          cors: true
 
 custom:
   pythonRequirements:
@@ -66,4 +116,11 @@ custom:
   serverless-offline:
     httpPort: 3000
     host: 0.0.0.0
-    apiKey: false  # Tắt kiểm tra API key khi chạy local
+    apiKey: false
+
+resources:
+  Resources:
+    EmailConfigurationSet:
+      Type: AWS::SES::ConfigurationSet
+      Properties:
+        Name: ${self:service}-${self:provider.stage}-config-set
