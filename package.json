@@ -1,0 +1,29 @@
+{
+  "name": "serverless-crud-lambda-python",
+  "version": "1.0.0",
+  "description": "Serverless CRUD API on AWS Lambda with Python",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "deploy:dev": "serverless deploy --stage dev",
+    "deploy:prod": "serverless deploy --stage prod",
+    "remove": "serverless remove",
+    "start:local": "serverless offline",
+    "test": "python -m pytest tests/",
+    "lint": "flake8 src/"
+  },
+  "devDependencies": {
+    "serverless": "^3.40.0",
+    "serverless-offline": "^13.3.3",
+    "serverless-python-requirements": "^6.1.0"
+  },
+  "keywords": [
+    "serverless",
+    "aws",
+    "lambda",
+    "crud",
+    "api",
+    "python"
+  ],
+  "author": "",
+  "license": "MIT"
+}

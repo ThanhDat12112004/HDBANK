@@ -1,0 +1,2 @@
+# Python dependencies for serverless CRUD demo
+# No AWS services needed for this demo
