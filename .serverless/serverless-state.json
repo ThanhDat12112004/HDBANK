@@ -12,6 +12,18 @@
       "environment": {
         "STAGE": "dev"
       },
+      "apiGateway": {
+        "usagePlan": {
+          "quota": {
+            "limit": 10000,
+            "period": "MONTH"
+          },
+          "throttle": {
+            "rateLimit": 100,
+            "burstLimit": 200
+          }
+        }
+      },
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
@@ -201,7 +213,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750728189307-2025-06-24T01:23:09.307Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.create",
               "Runtime": "python3.9",
@@ -231,7 +243,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750728189307-2025-06-24T01:23:09.307Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.get",
               "Runtime": "python3.9",
@@ -261,7 +273,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750728189307-2025-06-24T01:23:09.307Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.list_items",
               "Runtime": "python3.9",
@@ -291,7 +303,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750728189307-2025-06-24T01:23:09.307Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.update",
               "Runtime": "python3.9",
@@ -321,7 +333,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z/serverless-crud-python-demo.zip"
+                "S3Key": "serverless/serverless-crud-python-demo/dev/1750728189307-2025-06-24T01:23:09.307Z/serverless-crud-python-demo.zip"
               },
               "Handler": "src/handlers/items.delete",
               "Runtime": "python3.9",
@@ -344,54 +356,54 @@
               "DeleteItemLogGroup"
             ]
           },
-          "CreateItemLambdaVersionL6HZwv7N3cIpLoCbxPwyzZz5VgisSL7JL0BolABI": {
+          "CreateItemLambdaVersionjoWt3drbddgagAOgUeLJgZUnU82F0xWUbtqBUmO9LNI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "3/3dqgWAnoCpvZBgKt7xe+8ZrfPSyErNREd9Bbp/Zr4="
             }
           },
-          "GetItemLambdaVersion4v0wmq1mEfiD63AyvCwBZmZFIBo943CsDRjmSKw0U": {
+          "GetItemLambdaVersionWloxodyi1ipPbEcAIP5PoArXKmVJ18JJjWc3gnWOf4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "3/3dqgWAnoCpvZBgKt7xe+8ZrfPSyErNREd9Bbp/Zr4="
             }
           },
-          "ListItemsLambdaVersionok4AjEyjNAeIJJgEwun6g8MPfLMdn0zmyRzhuxaPyM": {
+          "ListItemsLambdaVersionequrYa5a8DsgUMEOvqkyfs7WFhkQSugzimyRZ9o8E": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "ListItemsLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "3/3dqgWAnoCpvZBgKt7xe+8ZrfPSyErNREd9Bbp/Zr4="
             }
           },
-          "UpdateItemLambdaVersionlKhidanJrw6uf7PeFs6m6IDX78odXDIwbMCYDI4Q4": {
+          "UpdateItemLambdaVersioniSGcQMV5uvFZzafLuSQgjOhVMOV77z9yEJtYq5DK2Kk": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "3/3dqgWAnoCpvZBgKt7xe+8ZrfPSyErNREd9Bbp/Zr4="
             }
           },
-          "DeleteItemLambdaVersionV7GxK0JElQDMGhfKVbQp025nr1aK9HjEeds9SNM": {
+          "DeleteItemLambdaVersionrpwJklTAcXW994P4hx7tfDCvtEi3L42z1HFZPbk40k": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteItemLambdaFunction"
               },
-              "CodeSha256": "5XvXW4bACt+pXPZwuJDxN0qn8P03ZZzZeipYPfuBWoU="
+              "CodeSha256": "3/3dqgWAnoCpvZBgKt7xe+8ZrfPSyErNREd9Bbp/Zr4="
             }
           },
           "ApiGatewayRestApi": {
@@ -753,7 +765,7 @@
               "DeleteItemLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1750653098870": {
+          "ApiGatewayDeployment1750728186584": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -770,6 +782,30 @@
               "ApiGatewayMethodItemsIdVarPut",
               "ApiGatewayMethodItemsIdVarDelete"
             ]
+          },
+          "ApiGatewayUsagePlan": {
+            "Type": "AWS::ApiGateway::UsagePlan",
+            "DependsOn": "ApiGatewayDeployment1750728186584",
+            "Properties": {
+              "ApiStages": [
+                {
+                  "ApiId": {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  "Stage": "dev"
+                }
+              ],
+              "Description": "Usage plan for serverless-crud-python-demo API",
+              "UsagePlanName": "serverless-crud-python-demo-dev-usage-plan",
+              "Quota": {
+                "Limit": 10000,
+                "Period": "MONTH"
+              },
+              "Throttle": {
+                "BurstLimit": 200,
+                "RateLimit": 100
+              }
+            }
           },
           "CreateItemLambdaPermissionApiGateway": {
             "Type": "AWS::Lambda::Permission",
@@ -955,6 +991,26 @@
                 ]
               }
             }
+          },
+          "ApiGatewayApiKey": {
+            "Type": "AWS::ApiGateway::ApiKey",
+            "Properties": {
+              "Name": "serverless-crud-python-demo-dev-api-key",
+              "Description": "API Key for serverless-crud-python-demo - dev",
+              "Enabled": true
+            }
+          },
+          "ApiGatewayUsagePlanKey": {
+            "Type": "AWS::ApiGateway::UsagePlanKey",
+            "Properties": {
+              "KeyId": {
+                "Ref": "ApiGatewayApiKey"
+              },
+              "KeyType": "API_KEY",
+              "UsagePlanId": {
+                "Ref": "ApiGatewayUsagePlan"
+              }
+            }
           }
         },
         "Outputs": {
@@ -969,7 +1025,7 @@
           "CreateItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateItemLambdaVersionL6HZwv7N3cIpLoCbxPwyzZz5VgisSL7JL0BolABI"
+              "Ref": "CreateItemLambdaVersionjoWt3drbddgagAOgUeLJgZUnU82F0xWUbtqBUmO9LNI"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-CreateItemLambdaFunctionQualifiedArn"
@@ -978,7 +1034,7 @@
           "GetItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetItemLambdaVersion4v0wmq1mEfiD63AyvCwBZmZFIBo943CsDRjmSKw0U"
+              "Ref": "GetItemLambdaVersionWloxodyi1ipPbEcAIP5PoArXKmVJ18JJjWc3gnWOf4"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-GetItemLambdaFunctionQualifiedArn"
@@ -987,7 +1043,7 @@
           "ListItemsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "ListItemsLambdaVersionok4AjEyjNAeIJJgEwun6g8MPfLMdn0zmyRzhuxaPyM"
+              "Ref": "ListItemsLambdaVersionequrYa5a8DsgUMEOvqkyfs7WFhkQSugzimyRZ9o8E"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-ListItemsLambdaFunctionQualifiedArn"
@@ -996,7 +1052,7 @@
           "UpdateItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateItemLambdaVersionlKhidanJrw6uf7PeFs6m6IDX78odXDIwbMCYDI4Q4"
+              "Ref": "UpdateItemLambdaVersioniSGcQMV5uvFZzafLuSQgjOhVMOV77z9yEJtYq5DK2Kk"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-UpdateItemLambdaFunctionQualifiedArn"
@@ -1005,7 +1061,7 @@
           "DeleteItemLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteItemLambdaVersionV7GxK0JElQDMGhfKVbQp025nr1aK9HjEeds9SNM"
+              "Ref": "DeleteItemLambdaVersionrpwJklTAcXW994P4hx7tfDCvtEi3L42z1HFZPbk40k"
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-DeleteItemLambdaFunctionQualifiedArn"
@@ -1035,6 +1091,41 @@
             },
             "Export": {
               "Name": "sls-serverless-crud-python-demo-dev-ServiceEndpoint"
+            }
+          },
+          "ApiGatewayRestApiId": {
+            "Value": {
+              "Ref": "ApiGatewayRestApi"
+            },
+            "Export": {
+              "Name": "serverless-crud-python-demo-dev-api-gateway-id"
+            }
+          },
+          "ApiGatewayRestApiRootResourceId": {
+            "Value": {
+              "Fn::GetAtt": [
+                "ApiGatewayRestApi",
+                "RootResourceId"
+              ]
+            },
+            "Export": {
+              "Name": "serverless-crud-python-demo-dev-api-gateway-root-resource-id"
+            }
+          },
+          "ApiKeyId": {
+            "Value": {
+              "Ref": "ApiGatewayApiKey"
+            },
+            "Export": {
+              "Name": "serverless-crud-python-demo-dev-api-key-id"
+            }
+          },
+          "UsagePlanId": {
+            "Value": {
+              "Ref": "ApiGatewayUsagePlan"
+            },
+            "Export": {
+              "Name": "serverless-crud-python-demo-dev-usage-plan-id"
             }
           }
         }
@@ -1174,7 +1265,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "CreateItemLambdaVersionL6HZwv7N3cIpLoCbxPwyzZz5VgisSL7JL0BolABI"
+        "versionLogicalId": "CreateItemLambdaVersionjoWt3drbddgagAOgUeLJgZUnU82F0xWUbtqBUmO9LNI"
       },
       "getItem": {
         "handler": "src/handlers/items.get",
@@ -1211,7 +1302,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "GetItemLambdaVersion4v0wmq1mEfiD63AyvCwBZmZFIBo943CsDRjmSKw0U"
+        "versionLogicalId": "GetItemLambdaVersionWloxodyi1ipPbEcAIP5PoArXKmVJ18JJjWc3gnWOf4"
       },
       "listItems": {
         "handler": "src/handlers/items.list_items",
@@ -1248,7 +1339,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "ListItemsLambdaVersionok4AjEyjNAeIJJgEwun6g8MPfLMdn0zmyRzhuxaPyM"
+        "versionLogicalId": "ListItemsLambdaVersionequrYa5a8DsgUMEOvqkyfs7WFhkQSugzimyRZ9o8E"
       },
       "updateItem": {
         "handler": "src/handlers/items.update",
@@ -1285,7 +1376,7 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "UpdateItemLambdaVersionlKhidanJrw6uf7PeFs6m6IDX78odXDIwbMCYDI4Q4"
+        "versionLogicalId": "UpdateItemLambdaVersioniSGcQMV5uvFZzafLuSQgjOhVMOV77z9yEJtYq5DK2Kk"
       },
       "deleteItem": {
         "handler": "src/handlers/items.delete",
@@ -1322,7 +1413,91 @@
         "timeout": 6,
         "runtime": "python3.9",
         "vpc": {},
-        "versionLogicalId": "DeleteItemLambdaVersionV7GxK0JElQDMGhfKVbQp025nr1aK9HjEeds9SNM"
+        "versionLogicalId": "DeleteItemLambdaVersionrpwJklTAcXW994P4hx7tfDCvtEi3L42z1HFZPbk40k"
+      }
+    },
+    "resources": {
+      "Resources": {
+        "ApiGatewayUsagePlan": {
+          "Type": "AWS::ApiGateway::UsagePlan",
+          "Properties": {
+            "UsagePlanName": "serverless-crud-python-demo-dev-usage-plan",
+            "Description": "Usage plan for serverless-crud-python-demo API",
+            "Quota": {
+              "Limit": 10000,
+              "Period": "MONTH"
+            },
+            "Throttle": {
+              "RateLimit": 100,
+              "BurstLimit": 200
+            },
+            "ApiStages": [
+              {
+                "ApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "Stage": "dev"
+              }
+            ]
+          }
+        },
+        "ApiGatewayApiKey": {
+          "Type": "AWS::ApiGateway::ApiKey",
+          "Properties": {
+            "Name": "serverless-crud-python-demo-dev-api-key",
+            "Description": "API Key for serverless-crud-python-demo - dev",
+            "Enabled": true
+          }
+        },
+        "ApiGatewayUsagePlanKey": {
+          "Type": "AWS::ApiGateway::UsagePlanKey",
+          "Properties": {
+            "KeyId": {
+              "Ref": "ApiGatewayApiKey"
+            },
+            "KeyType": "API_KEY",
+            "UsagePlanId": {
+              "Ref": "ApiGatewayUsagePlan"
+            }
+          }
+        }
+      },
+      "Outputs": {
+        "ApiGatewayRestApiId": {
+          "Value": {
+            "Ref": "ApiGatewayRestApi"
+          },
+          "Export": {
+            "Name": "serverless-crud-python-demo-dev-api-gateway-id"
+          }
+        },
+        "ApiGatewayRestApiRootResourceId": {
+          "Value": {
+            "Fn::GetAtt": [
+              "ApiGatewayRestApi",
+              "RootResourceId"
+            ]
+          },
+          "Export": {
+            "Name": "serverless-crud-python-demo-dev-api-gateway-root-resource-id"
+          }
+        },
+        "ApiKeyId": {
+          "Value": {
+            "Ref": "ApiGatewayApiKey"
+          },
+          "Export": {
+            "Name": "serverless-crud-python-demo-dev-api-key-id"
+          }
+        },
+        "UsagePlanId": {
+          "Value": {
+            "Ref": "ApiGatewayUsagePlan"
+          },
+          "Export": {
+            "Name": "serverless-crud-python-demo-dev-usage-plan-id"
+          }
+        }
       }
     },
     "configValidationMode": "warn",
@@ -1341,14 +1516,17 @@
       },
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
+      },
+      "resources": {
+        "$ref": "$[\"service\"][\"resources\"]"
       }
     },
     "layers": {},
     "isDashboardMonitoringPreconfigured": false,
-    "artifact": "/Users/Shared/HDBank/20th06/.serverless/serverless-crud-python-demo.zip"
+    "artifact": "/Users/Shared/HDBank/HDBANK/.serverless/serverless-crud-python-demo.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/serverless-crud-python-demo/dev/1750653101384-2025-06-23T04:31:41.384Z",
+    "artifactDirectoryName": "serverless/serverless-crud-python-demo/dev/1750728189307-2025-06-24T01:23:09.307Z",
     "artifact": "serverless-crud-python-demo.zip"
   }
 }

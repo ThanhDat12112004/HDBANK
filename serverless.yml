@@ -1,5 +1,4 @@
 service: serverless-crud-python-demo
-
 frameworkVersion: '3'
 
 provider:
@@ -9,6 +8,15 @@ provider:
   region: us-east-1
   environment:
     STAGE: ${self:provider.stage}
+  # Cấu hình API Gateway
+  apiGateway:
+    usagePlan:
+      quota:
+        limit: 10000
+        period: MONTH
+      throttle:
+        rateLimit: 100
+        burstLimit: 200
 
 plugins:
   - serverless-python-requirements
@@ -22,8 +30,7 @@ functions:
           path: /items
           method: post
           cors: true
-          private: true
-
+          private: true  # Yêu cầu API key
   getItem:
     handler: src/handlers/items.get
     events:
@@ -31,8 +38,7 @@ functions:
           path: /items/{id}
           method: get
           cors: true
-          private: true
-
+          private: true  # Yêu cầu API key
   listItems:
     handler: src/handlers/items.list_items
     events:
@@ -40,8 +46,7 @@ functions:
           path: /items
           method: get
           cors: true
-          private: true
-
+          private: true  # Yêu cầu API key
   updateItem:
     handler: src/handlers/items.update
     events:
@@ -49,8 +54,7 @@ functions:
           path: /items/{id}
           method: put
           cors: true
-          private: true
-
+          private: true  # Yêu cầu API key
   deleteItem:
     handler: src/handlers/items.delete
     events:
@@ -58,7 +62,7 @@ functions:
           path: /items/{id}
           method: delete
           cors: true
-          private: true
+          private: true  # Yêu cầu API key
 
 custom:
   pythonRequirements:
@@ -67,3 +71,69 @@ custom:
     httpPort: 3000
     host: 0.0.0.0
     apiKey: false  # Tắt kiểm tra API key khi chạy local
+
+# Resources bổ sung để tùy chỉnh API Gateway
+resources:
+  Resources:
+    # Usage Plan để quản lý rate limiting
+    ApiGatewayUsagePlan:
+      Type: AWS::ApiGateway::UsagePlan
+      Properties:
+        UsagePlanName: ${self:service}-${self:provider.stage}-usage-plan
+        Description: Usage plan for ${self:service} API
+        Quota:
+          Limit: 10000
+          Period: MONTH
+        Throttle:
+          RateLimit: 100
+          BurstLimit: 200
+        ApiStages:
+          - ApiId:
+              Ref: ApiGatewayRestApi
+            Stage: ${self:provider.stage}
+
+    # API Key
+    ApiGatewayApiKey:
+      Type: AWS::ApiGateway::ApiKey
+      Properties:
+        Name: ${self:service}-${self:provider.stage}-api-key
+        Description: API Key for ${self:service} - ${self:provider.stage}
+        Enabled: true
+
+    # Liên kết API Key với Usage Plan
+    ApiGatewayUsagePlanKey:
+      Type: AWS::ApiGateway::UsagePlanKey
+      Properties:
+        KeyId:
+          Ref: ApiGatewayApiKey
+        KeyType: API_KEY
+        UsagePlanId:
+          Ref: ApiGatewayUsagePlan
+
+# Outputs để hiển thị thông tin API key sau khi deploy
+  Outputs:
+    ApiGatewayRestApiId:
+      Value:
+        Ref: ApiGatewayRestApi
+      Export:
+        Name: ${self:service}-${self:provider.stage}-api-gateway-id
+
+    ApiGatewayRestApiRootResourceId:
+      Value:
+        Fn::GetAtt:
+          - ApiGatewayRestApi
+          - RootResourceId
+      Export:
+        Name: ${self:service}-${self:provider.stage}-api-gateway-root-resource-id
+
+    ApiKeyId:
+      Value:
+        Ref: ApiGatewayApiKey
+      Export:
+        Name: ${self:service}-${self:provider.stage}-api-key-id
+
+    UsagePlanId:
+      Value:
+        Ref: ApiGatewayUsagePlan
+      Export:
+        Name: ${self:service}-${self:provider.stage}-usage-plan-id
